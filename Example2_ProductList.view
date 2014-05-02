@@ -1,0 +1,170 @@
+sap.ui.jsview("epmproductsapp.ProductList", {
+
+	/** Specifies the Controller belonging to this View. 
+	* In the case that it is not implemented, or that "null" is returned, this View does not have a Controller.
+	* @memberOf epmproductsapp.ProductList
+	*/ 
+	getControllerName : function() {
+		return "epmproductsapp.ProductList";
+	},
+
+	/** Is initially called once after the Controller has been instantiated. It is the place where the UI is constructed. 
+	* Since the Controller is given to this method, its event handlers can be attached right away. 
+	* @memberOf epmproductsapp.ProductList
+	*/ 
+	createContent : function(oController) {
+
+		
+		jQuery.sap.require("sap.ui.table.Table"); 
+		 
+		 // create table control with properties 
+		 var oTable = new sap.ui.table.Table({ 
+		 width : "100%", 
+		 rowHeight : 50, 
+		 title : "List of Products", 
+		 selectionMode : sap.ui.table.SelectionMode.None 
+		 });
+		 
+		 
+		// create the popup for click on image 
+		 var oDialog = new sap.ui.commons.Dialog({ 
+		 minWidth : "300px", 
+		 minHeight : "240px" 
+		 }); 
+		 
+		 // define the columns, which should be displayed
+		// define the columns, which should be displayed 
+		 oTable.addColumn(new sap.ui.table.Column({		 
+		 width : "80px", 
+		 flexible : false, 
+		 template : new sap.ui.commons.Image({ 
+		 height : "45px", 
+		 src : "{ProductPicUrl}", 
+		 press : function(oEvent) { 
+			 
+			 // initialize popup content 
+			 oDialog.destroyContent(); 
+			 
+			 // set the binding context from image 
+			 // NOTE: No oDialog.setModel() needed here, as SAPUI5 
+			 // will bind controls to its default model. The default 
+			 // model instance was assigned in the view controller’s 
+			 // onInit() hook method 
+			 oDialog.setBindingContext(oEvent.oSource 
+			 .getBindingContext()); 
+			 
+			 // create popup content 
+			 oDialog.bindProperty("title", "ProductID"); 
+			 oDialog.addContent(new sap.ui.commons.layout.BorderLayout({ 
+			 height : "220px", 
+			 top : { 
+			 contentAlign : "center", 
+			 size : "155px", 
+			 content : new sap.ui.commons.Image({ 
+			 height : "150px", 
+			 src : "{ProductPicUrl}" 
+			 }) 
+			 }, 
+			 center : { 
+			 contentAlign : "center", 
+			 content : new sap.ui.commons.TextView({ 
+			 text : "{Description}" 
+			 }) 
+			 } 
+			 })); 
+			 
+			 // open popup 
+			 if (!oDialog.isOpen()) { 
+			 oDialog.open(); 
+			 } 
+			 } 
+			 }) 
+			 })); 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 // define the columns, which should be displayed 
+		 oTable.addColumn(new sap.ui.table.Column({ 
+		 width : "80px", 
+		 flexible : false, 
+		 template : new sap.ui.commons.Image({ 
+		 height : "45px", 
+		 src : "{ProductPicUrl}" 
+		 }) 
+		 })); 
+		 
+		 oTable.addColumn(new sap.ui.table.Column({ 
+		 label : new sap.ui.commons.Label({ 
+		 text : "Product ID" 
+		 }), 
+		 template : new sap.ui.commons.TextView({ 
+		 text : "{ProductID}" 
+		 }), 
+		 sortProperty : "ProductID" 
+		 } 
+		 
+		 // alternatively (instead of curly braces syntax for property binding): 
+		 // sap.ui.commons.TextView().bindText("ProductID") 
+		 // alternatively: 
+		 // sap.ui.commons.TextView().bindProperty("text","ProductID") 
+		 )); 
+		 
+		 oTable.addColumn(new sap.ui.table.Column({ 
+		 label : new sap.ui.commons.Label({ 
+		 text : "Product Name" 
+		 }), 
+		 template : new sap.ui.commons.TextView({ 
+		 text : "{Name}" 
+		 }), 
+		 sortProperty : "Name" 
+		 })); 
+		 oTable.addColumn(new sap.ui.table.Column({ 
+		 label : new sap.ui.commons.Label({ 
+		 text : "Price", 
+		 }), 
+		 template : new sap.ui.commons.TextView({ 
+		 text : "{Price}", 
+		 textAlign : sap.ui.core.TextAlign.End 
+		 }), 
+		 sortProperty : "Price" 
+		 })); 
+		 oTable.addColumn(new sap.ui.table.Column({ 
+		 label : new sap.ui.commons.Label({ 
+		 text : "Currency" 
+		 }), 
+		 template : new sap.ui.commons.TextView({ 
+		 text : "{CurrencyCode}" 
+		 }), 
+		 sortProperty : "CurrencyCode" 
+		 })); 
+		 oTable.addColumn(new sap.ui.table.Column({ 
+		 label : new sap.ui.commons.Label({ 
+		 text : "Supplier" 
+		 }), 
+		 template : new sap.ui.commons.TextView({ 
+		 text : "{SupplierName}" 
+		 }), 
+		 sortProperty : "SupplierName" 
+		 })); 
+		 
+		// In this sample we do not need to link the table control to the model. 
+		// SAPUI5 automatically binds the table to the global (unnamed default) 
+		// model assigned to sap.ui.core.Core befor in the view controller’s 
+		// onInit() hook method (see comments there). 
+		 // oTable.setModel(oModel); 
+		 
+		 // bind table rows to the OData entity set 
+		 oTable.bindRows("/EpmProducts"); 
+		 return oTable; 
+		 
+		
+		
+		
+
+	}
+
+});
