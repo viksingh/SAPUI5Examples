@@ -14,7 +14,7 @@ sap.ui.controller("epmproductsapp.ProductList", {
 	 
 	 // create OData model instance with service URL and JSON format 
 	 var oModel = new sap.ui.model.odata.ODataModel(sServiceUrl, true, 
-	 "bcuser", "satyam20"); 
+	 "bcuser", "password***"); 
 
 	 sap.ui.getCore().setModel(oModel);
 	
